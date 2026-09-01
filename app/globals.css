@@ -27,5 +27,5 @@
 @media(max-width:900px){.hero{background-position:center top}.confirmation-page{min-height:1450px;padding:38px 16px 60px}.confirmation-card{height:auto;min-height:760px;padding:34px 18px 28px;border-radius:16px}.confirmation-success{width:100px;height:100px;font-size:42px}.confirmation-card h1{font-size:30px;margin:30px 0 12px}.confirmation-email{font-size:14px;margin:22px 0 30px}.confirmation-details{padding:12px}.confirmation-line{grid-template-columns:82px 1fr auto;gap:10px;min-height:58px}.confirmation-line img{width:82px;height:58px}.confirmation-line span{font-size:11px}.confirmation-line strong{font-size:13px}.confirmation-total{margin:25px 0 20px;font-size:14px}.confirmation-total strong{font-size:20px}.confirmation-page>h2{font-size:24px;margin:52px 0 20px}.next-steps{grid-template-columns:1fr;gap:12px}.next-steps article{height:auto;min-height:120px}.next-steps strong{margin-top:14px}.next-steps span{margin-top:8px}}
 .hero{background-size:cover;background-position:center bottom;background-repeat:no-repeat;background-color:#332b28}
 .hero-copy>div .button{border-radius:16px}
-.hero-copy .explore-cta{font-weight:400}
+.hero-copy .explore-cta{font-weight:400;font-size:13px}
 @media(max-width:900px){.hero{background-size:cover;background-position:center bottom}}
