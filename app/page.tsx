@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, MouseEvent, useMemo, useState } from "react";
+import { FormEvent, MouseEvent, useEffect, useMemo, useState } from "react";
 
 type View = "home" | "listing" | "product" | "cart" | "checkout" | "confirmation";
 type Cart = Record<string, number>;
@@ -72,6 +72,10 @@ function Header({ cartCount, query, setQuery, searchOpen, setSearchOpen, menuOpe
 }
 
 function Home({ openListing, openProduct, add, reviewIndex, setReviewIndex }: { openListing: (name: string) => void; openProduct: (id: string) => void; add: (p: Product, q?: number, e?: MouseEvent) => void; reviewIndex: number; setReviewIndex: (v: number) => void }) {
+  useEffect(() => {
+    const timer = window.setInterval(() => setReviewIndex((reviewIndex + 1) % reviews.length), 3000);
+    return () => window.clearInterval(timer);
+  }, [reviewIndex, setReviewIndex]);
   return <><section className="hero"><div className="hero-copy"><span>AUSTRALIAN MADE</span><h1>Furniture made for<br />the way you live.</h1><p>Warm materials, considered proportions and timeless pieces for every room.</p><div><button className="button brand" onClick={() => openListing("Living")}>SHOP LIVING</button><a className="button surface explore-cta" href="#rooms">EXPLORE COLLECTIONS</a></div></div></section>
   <section className="content-section" id="rooms"><h2>Shop by room</h2><div className="room-grid">{rooms.map((room) => <button className="room-card" key={room.name} onClick={() => openListing(room.name)}><span className="room-image"><img src={room.image} alt={`${room.name} furniture`} /></span><b>{room.name}</b></button>)}</div></section>
   <section className="promo"><button className="promo-copy" onClick={() => openListing("Living")}><small>CUSTOM FURNITURE, MADE LOCALLY</small><strong>EXPLORE</strong><span>→</span><p>Australian-made pieces with complimentary delivery on every customised order.</p></button><img src={asset("promo.png")} alt="Free delivery with every customised Australian made order" /></section>
