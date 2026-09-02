@@ -43,7 +43,12 @@
 /* Review carousel: three review cards per page, with three pages total. */
 .review-page{flex:0 0 100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
 .review-page .review-card{flex:initial;margin-right:0}
+.review-track-mobile,.review-controls-mobile{display:none}
 @media(max-width:900px){
   .review-page{display:flex;flex-direction:column;gap:14px}
   .review-page .review-card{flex:initial;margin-right:0}
+  .review-track-desktop,.review-controls-desktop{display:none}
+  .review-track-mobile{display:flex;gap:0}
+  .review-track-mobile .review-card{flex:0 0 100%;margin:0}
+  .review-controls-mobile{display:flex}
 }

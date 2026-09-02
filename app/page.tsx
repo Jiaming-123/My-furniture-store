@@ -78,16 +78,25 @@ function Header({ cartCount, query, setQuery, searchOpen, setSearchOpen, menuOpe
   </header></>;
 }
 
-function Home({ openListing, openProduct, add, reviewIndex, setReviewIndex }: { openListing: (name: string) => void; openProduct: (id: string) => void; add: (p: Product, q?: number, e?: MouseEvent) => void; reviewIndex: number; setReviewIndex: (v: number) => void }) {
+function Home({ openListing, openProduct, add, reviewIndex, setReviewIndex }: { openListing: (name: string) => void; openProduct: (id: string) => void; add: (p: Product, q?: number, e?: MouseEvent) => void; reviewIndex: number; setReviewIndex: React.Dispatch<React.SetStateAction<number>> }) {
+  const [mobileReviewIndex, setMobileReviewIndex] = useState(0);
   useEffect(() => {
-    const timer = window.setInterval(() => setReviewIndex((reviewIndex + 1) % reviewPages.length), 3000);
+    const timer = window.setInterval(() => setReviewIndex((index) => (index + 1) % reviewPages.length), 3000);
     return () => window.clearInterval(timer);
-  }, [reviewIndex, setReviewIndex]);
+  }, [setReviewIndex]);
+  useEffect(() => {
+    const timer = window.setInterval(() => setMobileReviewIndex((index) => (index + 1) % reviews.length), 3000);
+    return () => window.clearInterval(timer);
+  }, []);
   return <><section className="hero"><div className="hero-copy"><span>AUSTRALIAN MADE</span><h1>Furniture made for<br />the way you live.</h1><p>Warm materials, considered proportions and timeless pieces for every room.</p><div><button className="button brand" onClick={() => openListing("Living")}>SHOP LIVING</button><a className="button surface explore-cta" href="#rooms">EXPLORE COLLECTIONS</a></div></div></section>
   <section className="content-section" id="rooms"><h2>Shop by room</h2><div className="room-grid">{rooms.map((room) => <button className="room-card" key={room.name} onClick={() => openListing(room.name)}><span className="room-image"><img src={room.image} alt={`${room.name} furniture`} /></span><b>{room.name}</b></button>)}</div></section>
   <section className="promo"><button className="promo-copy" onClick={() => openListing("Living")}><small>CUSTOM FURNITURE, MADE LOCALLY</small><strong>EXPLORE</strong><span>→</span><p>Australian-made pieces with complimentary delivery on every customised order.</p></button><img src={asset("promo.png")} alt="Free delivery with every customised Australian made order" /></section>
   <section className="content-section arrivals"><div className="section-title"><div><h2>New arrivals</h2><p>Fresh pieces, familiar warmth.</p></div><button onClick={() => openListing("Living")}>VIEW ALL →</button></div><div className="product-grid">{products.slice(0, 4).map((p, i) => <ProductCard key={p.id} product={p} openProduct={openProduct} add={add} delay={i} />)}</div></section>
-  <section className="content-section reviews"><div className="section-title"><div><h2>What our customers say</h2><p>Real homes, considered choices and service people remember.</p></div></div><div className="review-window"><div className="review-track" style={{ transform: `translateX(-${reviewIndex * 100}%)` }}>{reviewPages.map((page, pageIndex) => <div className="review-page" key={`review-page-${pageIndex}`}>{page.map((review) => <article className="review-card" key={review.name}><div><div className="stars">★★★★★</div><p>“{review.quote}”</p><strong>{review.name}</strong></div><img src={review.image} alt="Customer furniture" /></article>)}</div>)}</div></div><div className="review-controls">{reviewPages.map((_, i) => <button className={reviewIndex === i ? "active" : ""} key={`review-control-${i}`} aria-label={`Show review page ${i + 1}`} onClick={() => setReviewIndex(i)} />)}</div></section></>;
+  <section className="content-section reviews"><div className="section-title"><div><h2>What our customers say</h2><p>Real homes, considered choices and service people remember.</p></div></div><div className="review-window"><div className="review-track review-track-desktop" style={{ transform: `translateX(-${reviewIndex * 100}%)` }}>{reviewPages.map((page, pageIndex) => <div className="review-page" key={`review-page-${pageIndex}`}>{page.map((review) => <ReviewCard review={review} key={review.name} />)}</div>)}</div><div className="review-track review-track-mobile" style={{ transform: `translateX(-${mobileReviewIndex * 100}%)` }}>{reviews.map((review) => <ReviewCard review={review} key={`mobile-${review.name}`} />)}</div></div><div className="review-controls review-controls-desktop">{reviewPages.map((_, i) => <button className={reviewIndex === i ? "active" : ""} key={`review-control-${i}`} aria-label={`Show review page ${i + 1}`} onClick={() => setReviewIndex(i)} />)}</div><div className="review-controls review-controls-mobile">{reviews.map((review, i) => <button className={mobileReviewIndex === i ? "active" : ""} key={`mobile-review-control-${review.name}`} aria-label={`Show review ${i + 1}`} onClick={() => setMobileReviewIndex(i)} />)}</div></section></>;
+}
+
+function ReviewCard({ review }: { review: (typeof reviews)[number] }) {
+  return <article className="review-card"><div><div className="stars">★★★★★</div><p>“{review.quote}”</p><strong>{review.name}</strong></div><img src={review.image} alt="Customer furniture" /></article>;
 }
 
 function Listing({ title, openProduct, add, filterOpen, setFilterOpen }: { title: string; openProduct: (id: string) => void; add: (p: Product, q?: number, e?: MouseEvent) => void; filterOpen: boolean; setFilterOpen: (v: boolean) => void }) {
